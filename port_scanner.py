@@ -18,22 +18,33 @@ def Scan(port) :
     with socket.socket(socket.AF_INET , socket.SOCK_STREAM) as s :  
         result = s.connect_ex((target,port))
         if result == 0 : 
-            return f"Port {port} is online "
+            try : 
+                banner = s.recv(1024).decode()
+                return f"Port {port} is open with banner {banner}"
+            
+            except : 
+            
+                return f"Port {port} is online "
         
         else : return 0 
+
 
 print("scanning target " + target)
 print("scan started at ",datetime.now() )
 print("-"*50)
 
-with ThreadPoolExecutor(max_workers= 10) as executor : 
+num_ports = 0 
+total_ports = end_port-start_port
+
+with ThreadPoolExecutor(max_workers= 100) as executor : 
     futures = {executor.submit(Scan,port) : port for port in range(start_port,end_port)}
     
     for future in concurrent.futures.as_completed(futures) :
+        num_ports += 1 
         port = futures[future] 
         result = future.result()
-        if port%10 == 0 : 
-            print(f"scanned upto {port} port") 
+        if num_ports%10 == 0 : 
+            print(f"{num_ports} out of {total_ports} scanned") 
 
         if result != 0 : 
             print(result)

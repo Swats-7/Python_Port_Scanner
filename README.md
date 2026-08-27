@@ -12,9 +12,11 @@ The portscanner was a practical and pundamental project to better understand the
 
 2. Then it asks for two more fields as user input, thw port from where to start the scan and the port till which to scan.
 
-3. Finally it creates a sockets which communicates via TCP and sends a connect req to the target ip on random ports between the starting and the ending ports in groups of 10.
+3. Finally it creates a sockets which communicates via TCP and sends a connect req to the target ip on random ports between the starting and the ending ports in groups of 100.
 
-4. If the connection is established without any error the program returns the port on which it has been established. 
+4. If the connection is established without any error the program returns the port on which it has been established.
+
+5. The program recieves a banner as large as 1024 bytes and prints it to standard output.
 
 # Installation 
 
